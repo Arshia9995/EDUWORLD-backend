@@ -5,9 +5,9 @@ import { Users } from "../../models/user/userSchema";
 const findByEmail = async (email: string): Promise<UserEntity | null> => {
 
     try {
-      const existingUser = await Users.findOne({ email }).lean();
+      const user = await Users.findOne({ email }).lean();
   
-      return existingUser as UserEntity;
+      return user as UserEntity;
     } catch (error) {
       throw error
     }

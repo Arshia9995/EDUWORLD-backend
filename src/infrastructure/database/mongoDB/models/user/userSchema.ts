@@ -12,14 +12,14 @@ const userSchema = new mongoose.Schema<UserEntity>({
     },
     email: { type: String, required: true, unique: true },
     profile: {
-        dob: { type: String, required: true },
-        first_name: { type: String, required: true },
+        dob: { type: String },
+        first_name: { type: String},
         gender: { 
             type: String,
             enum: ['male', 'female', 'other'],
-            required: true 
+            // required: true 
         },
-        last_name: { type: String, required: true },
+        last_name: { type: String },
         profile_picture: { type: String }
     },
     created_at: { type: Date, default: Date.now },
@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema<UserEntity>({
         rating: { type: mongoose.Schema.Types.Decimal128, default: 0 }
     },
     password: { type: String, required: true },
-    isBlocked: { type: Boolean, default: false }
+    isBlocked: { type: Boolean, default: false },
+    verified: { type: Boolean, default: false }
 });
 
 // Update the 'updated_at' field before saving

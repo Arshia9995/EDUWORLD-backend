@@ -3,8 +3,14 @@ import { UserEntity } from "../../../../../domain/entities/user/UserEntity";
 
 const signUp = async(data: UserEntity): Promise<UserEntity | null> => {
     try {
-        const newUser = await Users.create(data)
-        return newUser
+        const user = await Users.create(data)
+        
+
+        if (!user) {
+            throw new Error("Failed to create or update user");
+          }
+
+        return user as UserEntity;
         
     } catch (error) {
         throw error;

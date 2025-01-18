@@ -5,28 +5,29 @@ export interface UserEntity  {
     name: string;
     role: 'student' | 'instructor' | 'admin';
     email: string;
-    profile: {
-        dob: string;
-        first_name: string;
-        gender: 'male' | 'female' | 'other';
-        last_name: string;
-        profile_picture: string;
+    profile?: {
+        dob?: string;
+        first_name?: string;
+        gender?: 'male' | 'female' | 'other';
+        last_name?: string;
+        profile_picture?: string;
     };
-    created_at: Date;
-    updated_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
     student_details?: {
-        additionalEmail: string;
-        enrolledCourses: Array<{
-            courseid: string;
-            progress: number;
+        additionalEmail?: string;
+        enrolledCourses?: Array<{
+            courseid?: string;
+            progress?: number;
         }>;
-        phone: number;
+        phone?: number;
     };
     instructor_details?: {
-        createdCourses: string[];
-        profit: number;
-        rating: number;
+        createdCourses?: string[];
+        profit?: number;
+        rating?: number;
     };
     password: string;
-    isBlocked: boolean;
+    isBlocked?: boolean;
+    verified?: boolean;
 }

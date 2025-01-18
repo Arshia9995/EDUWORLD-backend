@@ -10,7 +10,7 @@ import { OTPTemplate, sendMail } from "../../../infrastructure/nodeMailer";
 
 
 const signupUseCase = (dependencies: IDependencies) => {
-    const { repositories: { signUp, findByEmail, createOTP } } = dependencies
+    const { repositories: { findByEmail, createOTP } } = dependencies
     
     return {
         execute: async (data: UserEntity): Promise<IResponse> => {
@@ -20,19 +20,19 @@ const signupUseCase = (dependencies: IDependencies) => {
             if (existingUser) {
               throw new CustomError('Email already exists', 409, 'email');
             }
-            const hashedPassword = await hashPassword(data.password as string);
+            // const hashedPassword = await hashPassword(data.password as string);
             const OTP = generateOTP();
     
-            await createOTP(data.email, OTP)
+            await createOTP(data.name,data.email, OTP,data.password,data.role  as "student" | "instructor" | "admin")
     
             await sendMail(data.email, 'OTP verification', OTPTemplate(OTP))
     
-            await signUp({ ...data, password: hashedPassword });
+            // await signUp({ ...data, password: hashedPassword });
     
             return {
               status: ResponseStatus.SUCCESS,
-              message: 'Account registered successfully',
-              redirectURL: '/otp-verification',
+              message: 'OTP sent  successfully',
+            //   redirectURL: '/otp-verification',
               data: { email: data.email }
             }
     

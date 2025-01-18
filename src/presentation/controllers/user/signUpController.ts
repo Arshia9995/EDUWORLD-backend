@@ -4,6 +4,7 @@ import { validateEmail,validateName } from "../../../utils/validator";
 import { CustomError } from "../../../utils/CustomError";
 
 import { UserEntity } from "../../../domain/entities/user/UserEntity";
+import { dependencies } from "../../../config/dependencies";
 const signup = (dependencies: IDependencies) => {
 
   const {useCases: { signupUseCase } } = dependencies
@@ -25,16 +26,16 @@ const signup = (dependencies: IDependencies) => {
         email,
         password,
         role: role || 'student', // Default role if not provided
-        profile: {
-            dob: '',
-            first_name: '',
-            last_name: '',
-            gender: 'other' as const,
-            profile_picture: ''
-        },
-        created_at: new Date(),
-        updated_at: new Date(),
-        isBlocked: false
+        // profile: {
+        //     dob: '',
+        //     first_name: '',
+        //     last_name: '',
+        //     gender: 'other' as const,
+        //     profile_picture: ''
+        // },
+        // created_at: new Date(),
+        // updated_at: new Date(),
+        // isBlocked: false
     };
 
 
@@ -46,7 +47,6 @@ const signup = (dependencies: IDependencies) => {
         status: response?.status,
         message: response?.message,
         data:response?.data,
-        redirectURL: response?.redirectURL
       });
 
     } catch (error) {
@@ -55,6 +55,12 @@ const signup = (dependencies: IDependencies) => {
 
   }
 }
+
+// const verifyOtp = (dependencies : IDependencies)=>{
+//   return async(req: Request, res: Response, next: NextFunction)=>{
+//     const {useCases : {}}
+//   }
+// }
 
 export {
   signup

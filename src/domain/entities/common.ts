@@ -1,8 +1,11 @@
 
 interface OTPEntity {
+    name: string;
     email: string;
     otp: string;
-    createdAt: Date
+    createdAt: Date;
+    password: string;
+    role: 'student' | 'instructor' | 'admin';
   }
   
   export {
