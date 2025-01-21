@@ -6,9 +6,9 @@ import { dependencies } from "../../../config/dependencies";
 const verifyOtpController = (dependencies: IDependencies) => {
     return async (req: Request, res: Response,next: NextFunction) => {
         try {
-            const {otp, email } = req.body;
+            const {otp, email,password,role } = req.body;
 
-            if(!otp || !email ){
+            if(!otp || !email || !password || !role ){
                 return res.status(400).json({
                     status: "error",
                     message: "OTP, email, password, and role are required",
@@ -17,7 +17,9 @@ const verifyOtpController = (dependencies: IDependencies) => {
 
             const response = await verifyOTPUseCase(dependencies).execute({
                 otp,
-                email
+                email,
+                password,
+                role
                 
             });
             return res.status(200).json({

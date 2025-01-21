@@ -13,7 +13,7 @@ const verifyOTPUseCase = (dependencies: IDependencies) => {
     const { repositories: { signUp, findByEmail, verifyOTP } } = dependencies
     
     return {
-        execute: async (data: {email:string, otp: string}): Promise<IResponse> => {
+        execute: async (data: {email:string, otp: string, password:string, role:string}): Promise<IResponse> => {
 
           try {
             // const existingUser = await findByEmail(data.email)
