@@ -6,6 +6,7 @@ import { hashPassword } from "../../../utils/bcrypt";
 import { CustomError } from "../../../utils/CustomError";
 import { ResponseStatus } from "../../../utils/enum";
 import { IDependencies } from "../../interfaces/user/IDependencies";
+import { generateTokens } from "../../../utils/jwt";
 
 
 
@@ -16,56 +17,51 @@ const verifyOTPUseCase = (dependencies: IDependencies) => {
         execute: async (data: {email:string, otp: string, password:string, role:string}): Promise<IResponse> => {
 
           try {
-            // const existingUser = await findByEmail(data.email)
-            
-            // if(!existingUser){
-            //     throw new CustomError('Not valid email', 404, 'email');
-            // }
-            // const validOTP = await verifyOTP(data.email, data.otp)
-            const validOTP =  await OTP.findOne({ email: data.email })
-            .sort({ createdAt: -1 }) // Sort by 'createdAt' in descending order
+           
+            const validOTP =  await OTP.findOne({ email: data.email, otp: data.otp })
+            .sort({ createdAt: -1 }) 
             .lean();
             console.log(validOTP)
             console.log(data)
 
             if(!validOTP){
                 throw new CustomError('Invalid or expired OTP', 400, 'otp');
+                
             }
             const hashedPassword = await hashPassword(validOTP.password);
     
             console.log("OTP verified successfully for email:", data.email);
 
-             // Create and verify the user
-        // const newUser = await signUp({
-        //     name: existingUser.name,
-        //     email: existingUser.email,
-        //     // password: hashedPassword,
-        //     // role: data.role as  "student" | "instructor" | "admin",
-        //     verified: true, // Mark user as verified
-        //   });
-            // await signUp({ ...data, password: hashedPassword });
-
             const newUser: UserEntity = {
                 name: validOTP.name,
                 email: validOTP.email,
-                password: validOTP.password,
+                password: hashedPassword,
                 role: validOTP.role as "student" | "instructor" | "admin",
-                verified: true, // Mark as verified
+                verified: true, 
               };
 
               const createdUser = await Users.create(newUser);
     
-            if (!newUser) {
+            if (!createdUser) {
                 throw new CustomError("Failed to create user", 500, "signup");
               }
+
+
+               
+            // Generate both tokens
+            const { accessToken, refreshToken } = generateTokens(createdUser);
               await OTP.deleteOne({ email: data.email, otp: data.otp });
 
-            // await OTP.deleteOne({ email: data.email, otp: data.otp });
+
+           
             return {
               status: ResponseStatus.SUCCESS,
               message: 'user verified and  registered successfully',
-            //   redirectURL: '/otp-verification',
-              data: { email: createdUser.email, role:createdUser.role }
+              data: { email: createdUser.email,
+                 role:createdUser.role,
+                 accessToken,
+                refreshToken
+                 }
             }
     
     

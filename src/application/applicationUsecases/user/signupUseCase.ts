@@ -32,7 +32,6 @@ const signupUseCase = (dependencies: IDependencies) => {
             return {
               status: ResponseStatus.SUCCESS,
               message: 'OTP sent  successfully',
-            //   redirectURL: '/otp-verification',
               data: { email: data.email }
             }
     

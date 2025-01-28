@@ -4,6 +4,7 @@ import { envString, envNumber } from '../utils/envUtils';
 
 dotenv.config();
 
+
 export const config = {
     http: {
       host: envString('HOST', 'localhost'),
@@ -16,4 +17,8 @@ export const config = {
         node_env:envString('NODE_ENV'),
         email_service:envString('EMAIL_SERVICE')
       },
+      admin: {
+        email: envString('ADMIN_EMAIL'),
+        password: envString('ADMIN_PASSWORD')
+    }
 }

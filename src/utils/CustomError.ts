@@ -5,6 +5,8 @@ class CustomError extends Error {
       super(message)
       this.statusCode = statusCode
       this.field = field
+
+      Object.setPrototypeOf(this, CustomError.prototype);
   
     }
   }

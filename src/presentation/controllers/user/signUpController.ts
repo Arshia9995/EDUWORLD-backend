@@ -14,28 +14,15 @@ const signup = (dependencies: IDependencies) => {
     try {
       const { name, email, password,role } = req.body
 
-      //validating name
+       
       validateName(name);
-      
-
-      //validating email
-       validateEmail(email);
+      validateEmail(email);
 
        const newUser = {
         name,
         email,
         password,
-        role: role || 'student', // Default role if not provided
-        // profile: {
-        //     dob: '',
-        //     first_name: '',
-        //     last_name: '',
-        //     gender: 'other' as const,
-        //     profile_picture: ''
-        // },
-        // created_at: new Date(),
-        // updated_at: new Date(),
-        // isBlocked: false
+        role: role || 'student', 
     };
 
 
@@ -50,17 +37,19 @@ const signup = (dependencies: IDependencies) => {
       });
 
     } catch (error) {
-      next(error)
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).json({
+          status: 'error',
+          message: error.message,
+          field: error.field,
+        });
+      }  
+     next(error)
     }
-
   }
 }
 
-// const verifyOtp = (dependencies : IDependencies)=>{
-//   return async(req: Request, res: Response, next: NextFunction)=>{
-//     const {useCases : {}}
-//   }
-// }
+
 
 export {
   signup

@@ -1,6 +1,6 @@
 import { Role } from "../../utils/enum";
  
-export interface IResponse {
+ interface IResponse {
     status:string;
     message: string;
     redirectURL?: string;
@@ -8,3 +8,30 @@ export interface IResponse {
         [key: string]: string | number | boolean | object | any[];
       }
     };
+
+    interface ILoginData  {
+      email: string,
+      password: string
+    }
+
+    interface LoginResponse extends IResponse {
+      data?: {
+        email: string;
+        role: string;
+        accessToken?: string;
+        refreshToken?: string;
+    }
+    }
+    interface LogoutResponse {
+      status: "success" | "error";
+      message: string;
+    }
+
+    export {
+      IResponse,
+      ILoginData,
+      LoginResponse,
+      LogoutResponse,
+      
+
+    }

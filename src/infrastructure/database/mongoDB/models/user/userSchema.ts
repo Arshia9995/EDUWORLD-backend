@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema<UserEntity>({
     verified: { type: Boolean, default: false }
 });
 
-// Update the 'updated_at' field before saving
+
 userSchema.pre('save', function(next) {
     this.updated_at = new Date();
     next();
